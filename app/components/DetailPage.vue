@@ -6,7 +6,8 @@
         </ActionBar>
         <StackLayout>
           <Label class="message" text="Je suis la page de details"/>
-          
+            <Label :text="`Le film est prêté à `+ nom" class="text"/>
+          <Button text="Prêter le film"  @tap="onButtonSharedTap"/>
         </StackLayout>
             
     </Page>
@@ -14,38 +15,57 @@
 
 <script >
 import movieslistpage from "./MoviesListPage";
+
   export default {
     data() {
       return {
-        
+        nom: ""
       }
     },
     methods: {
     onBackPressed: function(event){
         this.$navigateTo(movieslistpage);
-    }
-  }
+    },
+
+    onButtonSharedTap: function (event) {
+
+        const promptOptions = {
+            message: "À qui le prêtez-vous?",
+            cancelButtonText: "Cancel",
+            actions: ["Maurice",
+                "Fardoche",
+                "Passe-Carreau",
+                "Passe-Montagne",
+                "Jean Charest",
+                "Yoda",
+                "L'armée du salut"]
+
+        };
+        action(promptOptions).then((r) => {
+            console.log("Dialog result: " + r);
+            this.nom = r.toString();
+
+        });
+
+    },
+
+
+}
   }
   
 
 </script>
 
 <style scoped>
-    ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
-        text-align: center;
-    }
-.actionbarTitle{
-text-align: center;
-font-size: 20px;
-font-weight: bold;
-font-family: sans-serif;
-}
     .message {
         vertical-align: center;
         text-align: center;
-        font-size: 20;
+        font-size: 20px;
         color: #333333;
+    }
+    .text{
+        font-size: 20px;
+        padding: 15px;
+        text-align: center;
     }
 </style>

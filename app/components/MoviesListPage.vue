@@ -3,15 +3,14 @@
     <ActionBar>
         <label class="actionbarTitle" text="NetFilm"/>
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
-      <ActionItem android.position="popup" text="Ajouter" icon="res://menu_white" @tap="onAddTap"/>
-      <ActionItem android.position="popup" text="Ajouter OMDB" icon="res://menu_white" @tap="onOMDBTap"/>
+      <ActionItem android.position="actionBar" text="Ajouter" android.systemIcon="ic_menu_add" @tap="onAddTap"/>
     </ActionBar>
     <StackLayout orientation="vertical">
       <Label class="header" text="Je suis la page de liste de films"/>
       <ListView for="item in itemList"  @tap="onItemTap">
         <v-template>
           <StackLayout orientation="vertical">
-            <Label :text="item.movie" class="movieLabel"/>
+            <Label :text="item.movie" class="movieLabel" textWrap="true"/>
           </StackLayout>
         </v-template>
       </ListView>
@@ -23,7 +22,7 @@
 import home from "./App";
 import list from "./MoviesListPage";
 import detail from "./DetailPage";
-import omdb from "./FormOMDB";
+import omdb from "./SharedMovies";
 import form from "./Form";
 export default {
   data() {
@@ -58,21 +57,7 @@ export default {
 </script>
 
 <style scoped>
-ActionBar {
 
-    text-align: center;
-  background-color: #53ba82;
-  color: #ffffff;
-}
-.actionbarTitle{
-text-align: center;
-font-size: 20px;
-font-weight: bold;
-font-family: sans-serif;
-}
-.movieLabel {
-  font-size: 15vw;
-}
 
 .header {
   font-size: 20vw;

@@ -67,28 +67,12 @@ import home from "./App";
 </script>
 
 <style scoped>
-    ActionBar {
-      
-        background-color: #53ba82;
-        color: #ffffff;
-    }
 .header {
   font-size: 20vw;
   padding: 10px;
   text-align: center;
 }
-.actionbarTitle{
-text-align: center;
-font-size: 20px;
-font-weight: bold;
-font-family: sans-serif;
-}
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20;
-        color: #333333;
-    }
+
     .friendLabel {
   font-size: 15vw;
   padding: 10px;
