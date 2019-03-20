@@ -23,6 +23,7 @@
 
 <script >
 import home from "./App";
+import dialogFragment from "./AddFriend";
   export default {
     data() {
       return {
@@ -41,8 +42,8 @@ import home from "./App";
       this.$navigateTo(home);
     },
     onAddFriendTap: function(event){
-        
-      var dialogs = require("tns-core-modules/ui/dialogs");
+        this.$showModal(dialogFragment);
+     /* var dialogs = require("tns-core-modules/ui/dialogs");
 
       const promptOptions = {
         title: "Ajouter un ami",
@@ -57,7 +58,7 @@ import home from "./App";
           if(r.text !== ""){
             this.friendlist.push({friend: r.text});
           }
-      });
+      });*/
 
     }
   }

@@ -15,17 +15,23 @@
             <Label class="response" :text="randomResponse" textWrap="true"/>
             <Button text="Question" @tap="questionTap"/>
             <Button text="Réponse" @tap="responseTap"/>
+            <Button text="Ajouter" @tap="addMovie"/>
         </StackLayout>
 
     </Page>
 </template>
 
 <script>
+    import * as http from "http";
     import {Image} from "tns-core-modules/ui/image";
     import * as camera from "nativescript-camera";
     import movieslistpage from "./MoviesListPage";
 
     export default {
+        mounted(){
+
+        },
+
         data() {
             return {
                 img: '',
@@ -64,6 +70,20 @@
 
                 this.randomQuestion = questions[tata];
                 this.randomResponse = '';
+            },
+            addMovie: function(){
+                http.request({
+                    url: "METTRE URL ICI",
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    content: JSON.stringify({
+
+                    })
+                }).then((response) => {
+                    // vérifier le retour pour en attribuer le comportement.
+                }, (e) => {
+                    // trapper les erreurs ici.
+                })
             },
             responseTap: function(event){
                 var responses = ["Libarté!!!!", "La géneration d'enfants-rois.", "Un Tripotanus.", "Grand-maman la raciste." , "Stromgol.",
