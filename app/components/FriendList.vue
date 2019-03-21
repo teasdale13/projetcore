@@ -43,22 +43,7 @@ import dialogFragment from "./AddFriend";
     },
     onAddFriendTap: function(event){
         this.$showModal(dialogFragment);
-     /* var dialogs = require("tns-core-modules/ui/dialogs");
 
-      const promptOptions = {
-        title: "Ajouter un ami",
-        message: "Veuillez inscrire le nom",
-        okButtonText: "Ok",
-        cancelButtonText: "Cancel",
-        defaultText: "",
-        inputType: "text",
-        capitalizationType: "sentences"
-    };
-      prompt(promptOptions).then((r) => {
-          if(r.text !== ""){
-            this.friendlist.push({friend: r.text});
-          }
-      });*/
 
     }
   }

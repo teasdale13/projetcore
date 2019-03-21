@@ -7,13 +7,13 @@
         </ActionBar>
         <StackLayout orientation="vertical">
             <Label class="header" text="Je suis la page de liste de films"/>
-            <!--<ListView for="film in listMovieItem"  @itemTap="onItemTap">
+            <ListView for="item in listMovieItem"  @itemTap="onItemTap">
                 <v-template>
                     <StackLayout orientation="vertical">
-                        <Label :text="film.titre" class="movieLabel" textWrap="true"/>
+                        <Label :text="item.anneesortie" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
-            </ListView>-->
+            </ListView>
         </StackLayout>
     </Page>
 </template>
@@ -31,8 +31,8 @@
             // Va chercher la liste de films à partir d'un URL.
             http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
                 result => {
-                    this.listMovieItem = result.results;
-                    console.log("STING OF LIST" + JSON.parse(this.listMovieItem));
+                    this.listMovieItem = result;
+                    //console.log("STRING OF LIST" + JSON.stringify(result));
 
                 },
                 error => {
@@ -54,9 +54,12 @@
                 console.log("onItemTap");
                 this.$navigateTo(detail, {
                     props: {
-                        movieTap: this.listMovieItem[index]
+
+                        movie: this.listMovieItem[index],
+
                     }
                 });
+                console.log("MOVIE " + this.listMovieItem[index])
             },
             onAddTap: function(event){
                 this.$navigateTo(form);
