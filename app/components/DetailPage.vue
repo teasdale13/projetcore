@@ -5,7 +5,7 @@
              <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
-          <Label class="message" text="myMovie.nom"/>
+          <Label class="message" :text="myMovie.titre"/>
             <Label :text="`Le film est prêté à `+ myMovie.kevamis" class="text"/>
             <!--<Image :src="METTRE URL DE L'IMAGE ICI"/> -->
           <Button text="Prêter le film"  @tap="onButtonSharedTap"/>
