@@ -8,6 +8,7 @@
           <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
           <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
           <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
+            <button text="Extra" @tap="onExtraTap" class="button"/>
         </StackLayout>
             
     </Page>
@@ -17,6 +18,7 @@
 import movieslistpage from "./MoviesListPage";
 import friendlist from "./FriendList";
 import sharedmovies from "./SharedMovies";
+import extra from "./Form";
 import * as app from 'tns-core-modules/application'
 import * as platform from 'tns-core-modules/platform'
 import * as color from 'tns-core-modules/color'
@@ -38,12 +40,16 @@ import * as color from 'tns-core-modules/color'
       this.$navigateTo(sharedmovies)
     },
 
+    onExtraTap: function(){
+        this.$navigateTo(extra)
+    },
+
     pageLoaded() {
         if (app.android && platform.device.sdkVersion >= "21") {
             const window = app.android.foregroundActivity.getWindow();
             window.setStatusBarColor(new color.Color("#000000").android);
         }
-    }
+    },
   }
   }
   

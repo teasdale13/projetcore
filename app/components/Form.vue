@@ -5,27 +5,20 @@
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
-            <Label class="message" text="Formulaire"/>
-            <Button text="Take a picture" @tap="takePhoto"/>
-            <Image :src="img" width="200" height="200"/>
 
-            <Label class="message" text="Formulaire OMDB"/>
             <Label class="message" text="Une partie de L'Osti D'jeu!?"/>
             <Label class="question" :text="randomQuestion" textWrap="true"/>
             <Label class="response" :text="randomResponse" textWrap="true"/>
             <Button text="Question" @tap="questionTap"/>
             <Button text="Réponse" @tap="responseTap"/>
-            <Button text="Ajouter" @tap="addMovie"/>
+
         </StackLayout>
 
     </Page>
 </template>
 
 <script>
-    import * as http from "http";
-    import {Image} from "tns-core-modules/ui/image";
-    import * as camera from "nativescript-camera";
-    import movieslistpage from "./MoviesListPage";
+    import home from "./App";
 
     export default {
         mounted(){
@@ -34,32 +27,15 @@
 
         data() {
             return {
-                img: '',
                 randomQuestion: '',
                 randomResponse:''
             }
         },
         methods: {
             onBackPressed: function (event) {
-                this.$navigateTo(movieslistpage);
+                this.$navigateTo(home);
             },
-            takePhoto() {
-                camera.requestPermissions().then(() => {
-                    camera.takePicture({width: 300, height: 300, keepAspectRatio: true, saveToGallery: true})
-                        .then((imageAsset) => {
-                            var image = new Image();
-                            image.src = imageAsset;
-                            this.img = imageAsset;
-                        })
-                        .catch(e => {
-                            console.log('error:', e);
-                        });
-                })
-                    .catch(e => {
-                        console.log('Error requesting permission');
-                    });
 
-            },
             questionTap: function(event){
                 var questions = ["Faire du pouce avec ...", "La première chose que l'ancien tueur fait en sortant de prison c'est ...",
                     "Mon vote pour le trou de cul du monde va à : ...", "Faire garder ses enfants par ...", "C'est quoi le meilleur truc contre les lendemains de veille? ...",
@@ -71,20 +47,7 @@
                 this.randomQuestion = questions[tata];
                 this.randomResponse = '';
             },
-            addMovie: function(){
-                http.request({
-                    url: "METTRE URL ICI",
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    content: JSON.stringify({
 
-                    })
-                }).then((response) => {
-                    // vérifier le retour pour en attribuer le comportement.
-                }, (e) => {
-                    // trapper les erreurs ici.
-                })
-            },
             responseTap: function(event){
                 var responses = ["Libarté!!!!", "La géneration d'enfants-rois.", "Un Tripotanus.", "Grand-maman la raciste." , "Stromgol.",
                     "Sauter en parachute de l'espace.", "Le capitaine Charles Patenaude.", "Saccager la Baie James.", "Un vagin qui pue fort.",

@@ -6,10 +6,10 @@
         </ActionBar>
         <StackLayout>
             <Label text="Avec une patate douce!"/>
-            <ListView for="item in sharedlist" @itemTap="onItemTap">
+            <ListView for="item in filteredFriends" @itemTap="onItemTap">
                 <v-template>
-                    <StackLayout orientation="vertical">
-                        <Label :text="item.movie" class="movieLabel" textWrap="true"/>
+                    <StackLayout orientation="horizontal">
+                        <Label :text="item.prenom + ' ' + item.nom" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -19,29 +19,47 @@
 </template>
 
 <script>
+    import * as http from "http";
     import home from "./App";
+    import detail from "./FriendsMovieList";
 
     export default {
+        mounted(){
+            http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
+                result => {
+
+                    this.friendsList = result;
+                    for (var x = 0; x < this.friendsList.length; x++ ){
+                        if (this.friendsList[x].kevfilms.length > 0){
+                            this.filteredFriends.push(this.friendsList[x]);
+                        }
+                    }
+
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+        },
         data() {
-
-
             return {
-
-                randomQuestion: '',
-                randomResponse: '',
-                sharedlist: [{movie: "Par derrière, tu entreras."}, {movie: "Je la prends toute! (la pointe de tarte)"}, {movie: "J'ai l'Doua! Chu mécanicien!"},
-                    {movie: "Il était une fois.... une fin!"}, {movie: "À cause de ma bedaine, je ne la vois plus. (la balance lorsque je me pèse!)"},
-                    {movie: "Lorsque je la sort, tout le monde est émerveillé par ma voiture antique."}],
-
+                friendsList: [],
+                moviessharedList: [],
+                filteredFriends: [],
             }
         },
         methods: {
             onBackPressed: function (event) {
                 this.$navigateTo(home);
             },
-            onItemTap: function (args) {
-                console.log("onItemTap");
-                alert("Vous avez cliqué sur un film qui est prêté");
+            onItemTap: function ({index, e}) {
+                console.log(JSON.stringify(this.friendsList[index]));
+                this.$navigateTo(detail, {
+                    props: {
+                        friend: this.friendsList[index]
+                    }
+
+                });
 
             }
         }

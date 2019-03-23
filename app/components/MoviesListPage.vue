@@ -10,7 +10,7 @@
             <ListView for="item in listMovieItem"  @itemTap="onItemTap">
                 <v-template>
                     <StackLayout orientation="vertical">
-                        <Label :text="item.anneesortie" class="movieLabel" textWrap="true"/>
+                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -23,7 +23,7 @@
     import home from "./App";
     import detail from "./DetailPage";
     import sharedlist from "./SharedMovies";
-    import form from "./Form";
+    import addmovie from "./AddMovie";
     export default {
         props: ["titre"],
 
@@ -32,7 +32,7 @@
             http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
                 result => {
                     this.listMovieItem = result;
-                    //console.log("STRING OF LIST" + JSON.stringify(result));
+                    console.log("STRING OF LIST" + JSON.stringify(result));
 
                 },
                 error => {
@@ -42,7 +42,8 @@
         },
         data() {
             return {
-                listMovieItem: []
+                listMovieItem: [],
+
 
             };
         },
@@ -62,7 +63,7 @@
                 console.log("MOVIE " + this.listMovieItem[index])
             },
             onAddTap: function(event){
-                this.$navigateTo(form);
+                this.$navigateTo(addmovie);
             },
             onSharedTap: function(event){
                 this.$navigateTo(sharedlist);

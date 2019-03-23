@@ -7,15 +7,13 @@
         </ActionBar>
         <StackLayout orientation="vertical">
             <Label class="header" text="Je suis la page de liste d'amis/es"/>
-            <ListView class="listview" for="item in friendlist"  @tap="onItemTap">
+            <ListView class="listview" for="item in friendlist" @itemTap="friendTap">
                 <v-template>
                     <StackLayout orientation="vertical">
-                        <Label :text="item.friend" class="friendLabel" textWrap="true"/>
+                        <Label :text="item.prenom + ' ' + item.nom" class="friendLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
-
-            <button class="addbutton" text="Ajouter un ami" @tap="onAddFriendTap"/>
         </StackLayout>
             
     </Page>
@@ -24,29 +22,42 @@
 <script >
 import home from "./App";
 import dialogFragment from "./AddFriend";
+import friendDetail from "./FriendDetail"
+import * as http from "http";
+
   export default {
-    data() {
-      return {
-        friendlist: [
-        { friend: "Ami 1..... C'est qui déjà!?" },
-        { friend: "Ami 2..... Quand même étonnant que j'en aille autant!" },
-        { friend: "Ami 3..... Foutaise!" },
-        { friend: "Ami 4..... Je dois surement rêver!" },
-        { friend: "Ami 5..... Ce n'est plus drôle!" },
-        { friend: "Ami 6..... C'est clairement pour l'argent!" },
-      ]
+      mounted() {
+
+          http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
+              result => {
+                  this.friendlist = result;
+              }, error => {
+
+              }
+          );
+      },
+      data() {
+          return {
+              friendlist: []
+          }
+      },
+      methods: {
+          onBackPressed: function (event) {
+              this.$navigateTo(home);
+          },
+          onAddFriendTap: function (event) {
+              this.$navigateTo(dialogFragment)
+
+          },
+          friendTap: function ({index, e}) {
+              this.$navigateTo(friendDetail, {
+                  props: {
+                      friend: this.friendlist[index]
+                  }
+              })
+          }
+
       }
-    },
-    methods: {
-    onBackPressed: function(event) {
-      this.$navigateTo(home);
-    },
-    onAddFriendTap: function(event){
-        this.$showModal(dialogFragment);
-
-
-    }
-  }
   }
   
 
