@@ -8,7 +8,7 @@
           <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
           <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
           <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
-            <button text="Extra" @tap="onExtraTap" class="button"/>
+          <button text="Extra" @tap="onExtraTap" class="button"/>
         </StackLayout>
             
     </Page>

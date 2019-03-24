@@ -22,7 +22,6 @@
     import * as http from "http";
     import home from "./App";
     import detail from "./DetailPage";
-    import sharedlist from "./SharedMovies";
     import addmovie from "./AddMovie";
     export default {
         props: ["titre"],
@@ -33,41 +32,59 @@
                 result => {
                     this.listMovieItem = result;
                     console.log("STRING OF LIST" + JSON.stringify(result));
-
                 },
                 error => {
                     console.log("ERREUR" + error);
                 });
 
+            /* Va chercher toutes les années et créer 2 tableaux. Un qui sert à garder toutes l'informations
+             * de l'objet année et un autre qui contient seulement l'année en STRING pour l'afficher dans le
+             * ListPicker dans la page  AddMovie.vue */
+            http.getJSON("http://pam-api.duckdns.org:1337/kevannees").then(
+                result => {
+                    this.anneeArray = result;
+                    console.log("ANNEE " + JSON.stringify(this.anneeArray));
+                    for (var x = 0; x < this.anneeArray.length; x++){
+                        this.anneeAsNumber.push(this.anneeArray[x].annee.toString());
+                        console.log("UN TEST " + JSON.stringify(this.anneeArray[x].annee));
+                    }
+                }, error => {
+                    console.log("ERREUR" + error);
+                }
+            );
         },
         data() {
             return {
                 listMovieItem: [],
-
+                anneeArray: [],
+                anneeAsNumber: []
 
             };
         },
         methods: {
-            onBackPressed: function(event) {
+            onBackPressed: function() {
                 this.$navigateTo(home);
             },
             onItemTap: function({index, e}){
                 console.log("onItemTap");
                 this.$navigateTo(detail, {
                     props: {
-
                         movie: this.listMovieItem[index],
 
                     }
                 });
                 console.log("MOVIE " + this.listMovieItem[index])
             },
-            onAddTap: function(event){
-                this.$navigateTo(addmovie);
+
+            onAddTap: function(){
+                this.$navigateTo(addmovie, {
+                    props: {
+                        annees: this.anneeAsNumber,
+                        myAnneeArray: this.anneeArray
+
+                    }
+                });
             },
-            onSharedTap: function(event){
-                this.$navigateTo(sharedlist);
-            }
 
         }
     };

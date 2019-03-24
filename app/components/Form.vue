@@ -40,7 +40,7 @@
                 var questions = ["Faire du pouce avec ...", "La première chose que l'ancien tueur fait en sortant de prison c'est ...",
                     "Mon vote pour le trou de cul du monde va à : ...", "Faire garder ses enfants par ...", "C'est quoi le meilleur truc contre les lendemains de veille? ...",
                     "C'est quoi ton parfum ? ...", "Flatte ...", "Qu'est-ce qui gosse en tabarnak? ...", "Faire un DEP pour apprendre à ...",
-                    "En jouant à Pokémon Go, j'ai pogné ...", "C'pas un osti de français qui va me montrer à ...", "Qu'est ce qui mène à une mort certaine?..."]
+                    "En jouant à Pokémon Go, j'ai pogné ...", "C'pas un osti de français qui va me montrer à ...", "Qu'est ce qui mène à une mort certaine?..."];
 
                 var tata = Math.floor(Math.random() * questions.length);
 
