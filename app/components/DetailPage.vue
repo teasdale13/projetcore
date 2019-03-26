@@ -13,12 +13,12 @@
                 <Image src="https://i.imgur.com/x3QWpLs.jpg" class="image"/>
                 <StackLayout orientation="vertical" width="40%" class="blabla">
 
-                    <Label :text="`Année : ` + this.myMovie.anneesortie" class="text" textWrap="true"/>
-                    <Label :text="`Durée : ` + this.myMovie.duree" class="text" textWrap="true"/>
+                    <Label :text="`Année : ` + this.Myannee" class="text" textWrap="true"/>
+                    <Label :text="`Durée : ` + this.myMovie.duree + ` minutes`" class="text" textWrap="true"/>
 
                 <StackLayout orientation="horizontal">
                     <Label text="Type : " class="type" width="35%%"/>
-                    <ListView for="item in kevtypesArray"  @itemTap="onItemTap" class="typelv">
+                    <ListView for="item in kevtypesArray" class="typelv">
                         <v-template>
                             <StackLayout orientation="vertical">
                                 <Label :text="item.description" class="movieLabel" textWrap="true"/>
@@ -63,13 +63,20 @@
           kevanneArray: [],
           kevtypesArray: [],
           fullnameList: [],
-          sharedList: []
+          sharedList: [],
+          Myannee: null
       }
     },
       mounted(){
           http.getJSON("http://pam-api.duckdns.org:1337/kevfilms/" + this.movie.id.toString()).then(
               result => {
                   this.myMovie = result;
+                  http.getJSON("http://pam-api.duckdns.org:1337/kevannees/" + this.myMovie.anneesortie.toString()).then(
+                      result => {
+                          console.log(JSON.stringify(result));
+                          this.Myannee = result.annee.toString();
+                      }
+                  );
                   console.log("HTTP GET JSON1 = " + JSON.stringify(this.myMovie));
                   this.kevamisArray = this.myMovie.kevamis;
                   this.kevanneArray = this.myMovie.kevannee;
@@ -78,7 +85,9 @@
                   } else{
                       this.kevtypesArray = null;
                   }
-          })
+          });
+
+
 
       },
     methods: {
@@ -156,7 +165,7 @@
         vertical-align: auto;
     }
     .text{
-        font-size: 20px;
+        font-size: 15px;
         margin: auto;
     }
     .button{
