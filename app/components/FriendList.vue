@@ -1,16 +1,17 @@
 <template>
     <Page>
         <ActionBar >
-          <label class="actionbarTitle" text="NetFilm"/>
+          <label class="actionbarTitle" text="AMIS"/>
           <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
           <ActionItem android.position="actionBar" android.systemIcon="ic_menu_add" @tap="onAddFriendTap"/>
         </ActionBar>
-        <StackLayout orientation="vertical">
+        <StackLayout orientation="vertical" >
             <Label class="header" text="Je suis la page de liste d'amis/es"/>
-            <ListView class="listview" for="item in friendlist" @itemTap="friendTap">
+            <ListView class="listview" for="item in datas" @itemTap="friendTap" >
                 <v-template>
-                    <StackLayout orientation="vertical">
-                        <Label :text="item.prenom + ' ' + item.nom" class="friendLabel" textWrap="true"/>
+                    <StackLayout orientation="horizontal" class="listviewcell">
+                        <!--<Label :text="item.prenom + ' ' + item.nom" class="friendLabel" textWrap="true"/>-->
+                        <Label :text="item" textWrap="true" class="friendLabel" verticalAlignment="center"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -28,17 +29,19 @@ import * as http from "http";
   export default {
       mounted() {
 
-          http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
+          // Va chercher tous les amis dans la base de données.
+          /*http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
               result => {
                   this.friendlist = result;
               }, error => {
 
               }
-          );
+          );*/
       },
       data() {
           return {
-              friendlist: []
+              friendlist: [],
+              datas: ["patate","patate","patate","patate","patate","patate","patate"]
           }
       },
       methods: {
@@ -70,9 +73,8 @@ import * as http from "http";
   text-align: center;
 }
 
-    .friendLabel {
-  font-size: 15vw;
-  padding: 10px;
+.friendLabel {
+    padding-left: 20vw;
 }
 .listview{
   height: 100%;

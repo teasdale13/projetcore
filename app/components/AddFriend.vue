@@ -1,11 +1,15 @@
 <template>
-    <Page class="dialog" @loaded="pageLoaded">
+    <Page @loaded="pageLoaded">
+        <ActionBar>
+            <label class="actionbarTitle" text="AJOUTER AMI"/>
+            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
+        </ActionBar>
         <FlexboxLayout class="stack" flexDirection="column">
             <Label text="Entrez le prénom:" textWrap="true" width="100%"/>
             <TextField hint="Prénom" id="firstname" class="editText" width="100%"/>
             <Label text="Entrez le nom:" textWrap="true" width="100%"/>
             <TextField hint="Nom" class="editText" width="100%" id="lastname"/>
-            <Button text="Confirmer" @tap="closeModal"/>
+            <Button text="Confirmer" @tap="closeModal" class="button"/>
 
         </FlexboxLayout>
     </Page>
@@ -15,12 +19,10 @@
     import listFirends from "./FriendList";
     import * as http from "http";
 
-
     export default {
         data(){
             return {
                 page: null,
-
             }
         },
         methods: {
@@ -28,6 +30,9 @@
             pageLoaded: function (args) {
                 this.page = args.object;
                 console.log("TEST pageLoaded " + this.page.toString());
+            },
+            onBackPressed: function(){
+                this.$navigateTo(listFirends);
             },
 
             /**
@@ -70,10 +75,6 @@
 </script>
 
 <style scoped>
-    .dialog{
-    /* min-width: 500px;*/
-    min-height: 600px;
-}
 .stack{
     width: 100%;
 }

@@ -1,14 +1,14 @@
 <template>
     <Page>
         <ActionBar>
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" text="AMI/FILMS"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
             <Label text="Avec une patate douce!"/>
             <ListView for="item in filteredFriends" @itemTap="onItemTap">
                 <v-template>
-                    <StackLayout orientation="horizontal">
+                    <StackLayout orientation="horizontal" class="listviewcell">
                         <Label :text="item.prenom + ' ' + item.nom" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>

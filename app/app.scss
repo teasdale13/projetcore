@@ -2,16 +2,34 @@
 // @see https://docs.nativescript.org/ui/styling
 
 ActionBar {
-  background-color: #ec576b;
+  background-color: #e05b33;
   color: #ffffff;
 
 }
+TextField{
+  color: #ffffff;
+  placeholder-color: #ffffff;
+}
 .button{
-  background-color: darkgray;
+  background-color: #40798c;
+  color: #000000;
+  margin-bottom: 15vw;
+  margin-top: 15vw;
+
+
 }
 .actionbarTitle{
-  font-size: 25px;
-  padding: 15px;
+  font-size: 20vw;
+  padding: 15vw;
   text-align: center;
   font-weight: bold;
+}
+.listviewcell{
+  height: 50vw;
+
+}
+
+Page{
+  background-color: #403d39;
+  color: #ffffff;
 }

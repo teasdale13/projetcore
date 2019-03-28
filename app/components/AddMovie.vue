@@ -1,18 +1,20 @@
 <template>
     <Page @loaded="pageLoaded">
         <ActionBar>
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" text="AJOUTER UN FILM"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
+        <!-- Contenant de toute la page -->
         <StackLayout orientation="vertical">
             <Label class="message" text="Formulaire"/>
-            <!-- StackLayout HORIZONTAL pour afficher la photo et quelques info côte à côte -->
+            <!-- StackLayout HORIZONTAL pour disposer la photo et quelques info côte à côte -->
             <StackLayout orientation="horizontal">
-                <!-- Affiche -->
+                <!-- Affiche la PHOTO et le bouton pour prendre la photo. -->
                 <StackLayout orientation="vertical">
                     <Image :src="img" width="150" height="150"/>
-                    <Button text="Take a picture" @tap="takePhoto"/>
+                    <Button text="Take a picture" @tap="takePhoto" class="button"/>
                 </StackLayout>
+                <!-- Affiche les TEXTFIELD pour remplir le champs TITRE ET DURÉE -->
                 <StackLayout orientation="vertical">
                     <TextField hint="Titre" id="title"/>
                     <TextField hint="Durée en minutes" keyboardType="number" id="duree"/>
@@ -22,7 +24,7 @@
             <TextField hint="Scénario" id="scenario"/>
             <StackLayout orientation="horizontal">
                 <StackLayout orientation="vertical" width="50%">
-                    <Button  text="Type" @tap="addMovieType"/>
+                    <Button  text="Type" @tap="addMovieType" class="button"/>
                     <ListView for="item in allMovietypes"  height="20%" >
                         <v-template>
                             <StackLayout orientation="vertical">
@@ -36,7 +38,7 @@
 
             </StackLayout>
 
-            <Button text="Sauvegarder" @tap="saveToDB" />
+            <Button text="Sauvegarder" @tap="saveToDB" class="button"/>
 
 
         </StackLayout>
@@ -55,7 +57,7 @@
 
         mounted(){
             console.log("MOUNTED " + this.annees);
-            this.anneeAsNumber = this.annees;
+            this.anneeAsNumber = this.annees.sort();
 
             /* Va chercher tous les types dans la DB et créer 2 listes. Une qui servira à afficher la description
              * en STRING dans une ListView et l'autre servira à garder tout l'objet en mémoire. */
@@ -76,6 +78,7 @@
 
         data() {
             return{
+                // la souce de l'image
                 img: "",
                 anneeArray: this.myAnneeArray,
                 anneeAsNumber: this.annees,
@@ -84,7 +87,8 @@
                 // Array qui sert à afficher dans le ActionDialog.
                 allTypesString: [],
                 // Array des types associés au film.
-                allMovietypes: []
+                allMovietypes: [],
+                fullMovieList: []
             }
 
         },
@@ -112,21 +116,29 @@
                     });
 
             },
+            /**
+             * Fonction qui creer un objet PAGE pour permettre d'aller chercher les valeurs dans les différents
+             * composantes de la page/screen.
+             *
+             * @param args quelque chose qui contient du contenu qui permet d'atteidre d'autres contenus!
+             */
             pageLoaded: function(args){
                 console.log("PAGE LOADED");
                 this.page = args.object;
                 console.log("TEST pageLoaded " + this.page.toString());
             },
-            addMovie: function(){
 
-
-            },
-            onBackPressed: function (event) {
+            /**
+             * Fonction qui retourne à la page de liste de films.
+             *  ---- NavigationButton dans l'ActionBar ----
+             */
+            onBackPressed: function () {
                 this.$navigateTo(movieslistpage);
             },
 
             /**
-             * Fonction qui
+             * Fonction qui prend toutes les valeurs qui sont dans les TEXTFIELD, LISTVIEW et LISTPICKER
+             * et qui sauvegarde sur la base de données via une requête POST.
              */
             saveToDB: function () {
                 var view = require("ui/core/view");
@@ -157,9 +169,26 @@
                     console.log(response.toString());
                 }, (e) => {
                     // trapper les erreurs ici.
-                })
+                });
 
-                this.$navigateTo(movieslistpage);
+                // Après l'insertion, on retourne à la page de listes de films, mais
+                // avant de le faire nous devons aller chercher tous les films, puisque
+                // la page n'est pas rafraichit correctement après une insertion.
+                http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
+                    result => {
+                        this.fullMovieList = result;
+                    }
+                ).then(
+                    response => {
+                        console.log(JSON.stringify(response));
+                    }
+                );
+
+                this.$navigateTo(movieslistpage, {
+                    props: {
+                        allMovies: this.fullMovieList
+                    }
+                });
 
             },
 
@@ -184,13 +213,15 @@
              * le type est ajouté a un tableau qui sera stocké dans la base de données.
              */
             addMovieType: function () {
+                this.allTypesString = this.allTypesString.sort();
+                var cancel = "Cancel";
                 if (this.allTypesString.length !== 0) {
-                action("Your message", "Cancel", this.allTypesString)
+                action("Choisissez un type", cancel, this.allTypesString)
                     .then(result => {
                         console.log(result);
-                        // Vérifie si le résultat est égale au bouton CANCEL.
-                        if (result !== "Cancel" ) {
-                            // Retire le type de la liste qui est affiché dans le ActionDialog
+                        // Vérifie si le résultat est égale au bouton "CANCEL".
+                        if (result !== cancel ) {
+                            // Retire le "type" de la liste qui est affiché dans le ActionDialog
                             this.allTypesString = this.remove(this.allTypesString, result);
                             for (var x = 0; x < this.allTypes.length; x++ ){
                                 // Vérifie à partir de la liste initiale (Résultat de la query http) le type choisis
@@ -204,6 +235,7 @@
                     });
             }
                 else{
+                    // Averti l'utilisateur lorsque la liste de types est vide.
                     alert("Plus aucun types n'est disponible.")
                         .then(() => {
                             console.log("Alert dialog closed.");

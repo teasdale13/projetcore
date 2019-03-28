@@ -1,7 +1,7 @@
 <template>
     <Page>
         <ActionBar>
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" :text="`FILM/` + this.myFriend.prenom "/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>

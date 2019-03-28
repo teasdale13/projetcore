@@ -1,12 +1,12 @@
 <template>
     <Page>
         <ActionBar >
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" text="AMI"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
             <Label :text="this.myFriend.prenom + ' ' + this.myFriend.nom" />
-            <Button text="Supprimer" @tap="executeFriend"/>
+            <Button text="Supprimer" @tap="executeFriend" class="button"/>
         </StackLayout>
 
     </Page>

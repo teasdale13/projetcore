@@ -1,23 +1,23 @@
 <template>
     <Page>
         <ActionBar>
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" text="FILM EN DÉTAILS"/>
              <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
 
         <ScrollView height="100%">
 
-        <StackLayout>
+        <StackLayout class="container">
             <Label :text="`Titre : ` + this.myMovie.titre" class="title" textWrap="true"/>
             <StackLayout orientation="horizontal" >
                 <Image src="https://i.imgur.com/x3QWpLs.jpg" class="image"/>
-                <StackLayout orientation="vertical" width="40%" class="blabla">
+                <StackLayout orientation="vertical" class="blabla">
 
                     <Label :text="`Année : ` + this.Myannee" class="text" textWrap="true"/>
                     <Label :text="`Durée : ` + this.myMovie.duree + ` minutes`" class="text" textWrap="true"/>
 
                 <StackLayout orientation="horizontal">
-                    <Label text="Type : " class="type" width="35%%"/>
+                    <Label text="Type : " class="type"/>
                     <ListView for="item in kevtypesArray" class="typelv">
                         <v-template>
                             <StackLayout orientation="vertical">
@@ -31,7 +31,7 @@
 
             <Label :text="`Scénario : ` + this.myMovie.scenario" class="text" textWrap="true"/>
             <Label text="Ceux qui ont emprunté le film :" class="text"/>
-            <ListView for="item in kevamisArray"  @itemTap="onItemTap">
+            <ListView for="item in kevamisArray">
                 <v-template>
                     <StackLayout orientation="vertical">
                         <Label :text="item.nom" class="movieLabel" textWrap="true"/>
@@ -64,7 +64,8 @@
           kevtypesArray: [],
           fullnameList: [],
           sharedList: [],
-          Myannee: null
+          Myannee: null,
+          fullMovieList: []
       }
     },
       mounted(){
@@ -73,7 +74,7 @@
                   this.myMovie = result;
                   http.getJSON("http://pam-api.duckdns.org:1337/kevannees/" + this.myMovie.anneesortie.toString()).then(
                       result => {
-                          console.log(JSON.stringify(result));
+                          console.log("ANNEE " + JSON.stringify(result));
                           this.Myannee = result.annee.toString();
                       }
                   );
@@ -123,14 +124,29 @@
     },
         onDeleteTap: function () {
 
-           /* http.request({
+           http.request({
                 url: "http://pam-api.duckdns.org:1337/kevfilms/" + this.movie.id.toString(),
                 method: "DELETE"
             }).then((response) => {
 
             }, (e) => {
-            });*/
-            this.$navigateTo(movieslistpage);
+            });
+
+           http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
+               result => {
+                   this.fullMovieList = result;
+               }
+           ).then(
+               response => {
+                   console.log(JSON.stringify(response));
+               }
+           );
+
+            this.$navigateTo(movieslistpage, {
+                props: {
+                    allMovies: this.fullMovieList
+                }
+            });
         }
 }
   }
@@ -140,6 +156,9 @@
 
 <style scoped>
 
+    .container{
+        padding: 10px;
+    }
     .image{
         height: 30%;
         width: 30%;
@@ -156,7 +175,7 @@
         font-size: 20px;
     }
     .typelv{
-        width: 30%;
+        height: 150px;
     }
     .movieLabel{
         text-align: center;

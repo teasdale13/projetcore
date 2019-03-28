@@ -9,8 +9,8 @@
             <Label class="message" text="Une partie de L'Osti D'jeu!?"/>
             <Label class="question" :text="randomQuestion" textWrap="true"/>
             <Label class="response" :text="randomResponse" textWrap="true"/>
-            <Button text="Question" @tap="questionTap"/>
-            <Button text="Réponse" @tap="responseTap"/>
+            <Button text="Question" @tap="questionTap" class="button"/>
+            <Button text="Réponse" @tap="responseTap" class="button"/>
 
         </StackLayout>
 
@@ -89,6 +89,5 @@
         vertical-align: center;
         text-align: center;
         font-size: 20px;
-        color: #333333;
     }
 </style>

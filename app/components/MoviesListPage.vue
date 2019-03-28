@@ -1,16 +1,16 @@
 <template>
-    <Page>
+    <Page @loaded="onLoaded">
         <ActionBar>
-            <label class="actionbarTitle" text="NetFilm"/>
+            <label class="actionbarTitle" text="FILMS"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
             <ActionItem android.position="actionBar" text="Ajouter" android.systemIcon="ic_menu_add" @tap="onAddTap"/>
         </ActionBar>
         <StackLayout orientation="vertical">
             <Label class="header" text="Je suis la page de liste de films"/>
-            <ListView for="item in listMovieItem"  @itemTap="onItemTap">
+            <ListView for="item in listMovieItem"  @itemTap="onItemTap" height="100%">
                 <v-template>
-                    <StackLayout orientation="vertical">
-                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
+                    <StackLayout orientation="horizontal" class="listviewcell" >
+                        <Label :text="item.titre" class="movieLabel" textWrap="true" verticalAlignment="center"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -24,9 +24,12 @@
     import detail from "./DetailPage";
     import addmovie from "./AddMovie";
     export default {
-        props: ["titre"],
+        props: ["titre", "allMovies"],
 
         mounted(){
+            this.listMovieItem = this.allMovies;
+
+            console.log("mounted");
             // Va chercher la liste de films à partir d'un URL.
             http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
                 result => {
@@ -46,7 +49,6 @@
                     console.log("ANNEE " + JSON.stringify(this.anneeArray));
                     for (var x = 0; x < this.anneeArray.length; x++){
                         this.anneeAsNumber.push(this.anneeArray[x].annee.toString());
-                        console.log("UN TEST " + JSON.stringify(this.anneeArray[x].annee));
                     }
                 }, error => {
                     console.log("ERREUR" + error);
@@ -85,12 +87,20 @@
                     }
                 });
             },
+            onLoaded: function () {
+                console.log("onLoaded");
+            }
 
         }
     };
 </script>
 
 <style scoped>
+
+    .movieLabel{
+        padding-left: 20vw;
+        font-size: 15;
+    }
 
 
     .header {
