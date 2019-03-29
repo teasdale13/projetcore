@@ -61,7 +61,7 @@
 
             /* Va chercher tous les types dans la DB et créer 2 listes. Une qui servira à afficher la description
              * en STRING dans une ListView et l'autre servira à garder tout l'objet en mémoire. */
-            http.getJSON("http://pam-api.duckdns.org:1337/kevtypes").then(
+            http.getJSON("https://pam-api.duckdns.org/kevtypes").then(
                 result => {
                     // Array des OBJECTS Type
                     this.allTypes = result;
@@ -152,7 +152,7 @@
 
 
                 http.request({
-                    url: "http://pam-api.duckdns.org:1337/kevfilms",
+                    url: "https://pam-api.duckdns.org/kevfilms",
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     content: JSON.stringify({
@@ -174,7 +174,7 @@
                 // Après l'insertion, on retourne à la page de listes de films, mais
                 // avant de le faire nous devons aller chercher tous les films, puisque
                 // la page n'est pas rafraichit correctement après une insertion.
-                http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
+                http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
                     result => {
                         this.fullMovieList = result;
                     }

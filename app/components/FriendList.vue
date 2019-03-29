@@ -7,11 +7,10 @@
         </ActionBar>
         <StackLayout orientation="vertical" >
             <Label class="header" text="Je suis la page de liste d'amis/es"/>
-            <ListView class="listview" for="item in datas" @itemTap="friendTap" >
+            <ListView class="listview" for="item in friendlist" @itemTap="friendTap" >
                 <v-template>
-                    <StackLayout orientation="horizontal" class="listviewcell">
-                        <!--<Label :text="item.prenom + ' ' + item.nom" class="friendLabel" textWrap="true"/>-->
-                        <Label :text="item" textWrap="true" class="friendLabel" verticalAlignment="center"/>
+                    <StackLayout orientation="horizontal" class="listviewcell" vertictalAlignment="center">
+                        <Label :text="item.prenom + ' ' + item.nom" class="friendLabel" textWrap="true" />
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -27,21 +26,24 @@ import friendDetail from "./FriendDetail"
 import * as http from "http";
 
   export default {
+  	props: ["allMyFriendAreHere"],
+
       mounted() {
 
-          // Va chercher tous les amis dans la base de données.
-          /*http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
-              result => {
-                  this.friendlist = result;
-              }, error => {
+			this.friendlist = this.allMyFriendAreHere;
+			// Va chercher tous les amis dans la base de données.
+			http.getJSON("https://pam-api.duckdns.org/kevamis").then(
+				result => {
+					this.friendlist = result;
+				}, error => {
+				}
+			);
 
-              }
-          );*/
+
       },
       data() {
           return {
               friendlist: [],
-              datas: ["patate","patate","patate","patate","patate","patate","patate"]
           }
       },
       methods: {
@@ -53,6 +55,7 @@ import * as http from "http";
 
           },
           friendTap: function ({index, e}) {
+          	console.log(JSON.stringify(this.friendlist[index]));
               this.$navigateTo(friendDetail, {
                   props: {
                       friend: this.friendlist[index]
@@ -74,7 +77,9 @@ import * as http from "http";
 }
 
 .friendLabel {
-    padding-left: 20vw;
+    height: 50vw;
+    padding: 15vw;
+
 }
 .listview{
   height: 100%;

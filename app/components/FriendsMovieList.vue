@@ -24,7 +24,7 @@
         props: ["friend"],
 
         mounted(){
-            http.getJSON("http://pam-api.duckdns.org:1337/kevamis/" + this.friend.id.toString()).then(
+            http.getJSON("https://pam-api.duckdns.org/kevamis/" + this.friend.id.toString()).then(
                 result => {
                     this.myFriend = result;
                     console.log("ALLO!!!!" + JSON.stringify(this.myFriend));

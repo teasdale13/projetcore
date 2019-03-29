@@ -6,11 +6,12 @@
             <ActionItem android.position="actionBar" text="Ajouter" android.systemIcon="ic_menu_add" @tap="onAddTap"/>
         </ActionBar>
         <StackLayout orientation="vertical">
+            <SearchBar hint="Search" id="searchbar"  @textChange="onTextChanged" @submit="onSubmit" @clear="onClear" />
             <Label class="header" text="Je suis la page de liste de films"/>
             <ListView for="item in listMovieItem"  @itemTap="onItemTap" height="100%">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell" >
-                        <Label :text="item.titre" class="movieLabel" textWrap="true" verticalAlignment="center"/>
+                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -31,7 +32,7 @@
 
             console.log("mounted");
             // Va chercher la liste de films à partir d'un URL.
-            http.getJSON("http://pam-api.duckdns.org:1337/kevfilms").then(
+            http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
                 result => {
                     this.listMovieItem = result;
                     console.log("STRING OF LIST" + JSON.stringify(result));
@@ -43,7 +44,7 @@
             /* Va chercher toutes les années et créer 2 tableaux. Un qui sert à garder toutes l'informations
              * de l'objet année et un autre qui contient seulement l'année en STRING pour l'afficher dans le
              * ListPicker dans la page  AddMovie.vue */
-            http.getJSON("http://pam-api.duckdns.org:1337/kevannees").then(
+            http.getJSON("https://pam-api.duckdns.org/kevannees").then(
                 result => {
                     this.anneeArray = result;
                     console.log("ANNEE " + JSON.stringify(this.anneeArray));
@@ -59,11 +60,36 @@
             return {
                 listMovieItem: [],
                 anneeArray: [],
-                anneeAsNumber: []
+                anneeAsNumber: [],
+                page: null
 
             };
         },
         methods: {
+            onSubmit:function(){
+            var view = require("ui/core/view");
+            var recherche = view.getViewById(this.page, "searchbar").text.toString();
+            var myItems = [];
+                if (recherche !== "") {
+                    for (let i = 0; i < this.listMovieItem.length; i++) {
+                        if (this.listMovieItem[i].titre.toLowerCase().includes(recherche)) {
+                            myItems.push(this.listMovieItem[i]);
+                        }
+                    }
+                }
+
+                this.listMovieItem = myItems;
+            },
+            onClear: function(){
+                http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
+                    result => {
+                        this.listMovieItem = result;
+                        console.log("STRING OF LIST" + JSON.stringify(result));
+                    },
+                    error => {
+                        console.log("ERREUR" + error);
+                    });
+            },
             onBackPressed: function() {
                 this.$navigateTo(home);
             },
@@ -87,7 +113,8 @@
                     }
                 });
             },
-            onLoaded: function () {
+            onLoaded: function (args) {
+                this.page = args.object;
                 console.log("onLoaded");
             }
 
@@ -99,7 +126,10 @@
 
     .movieLabel{
         padding-left: 20vw;
-        font-size: 15;
+        font-size: 15vw;
+        height: 50vw;
+        vertical-align: center;
+        text-align: center;
     }
 
 

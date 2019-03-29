@@ -52,7 +52,7 @@
 
                 // Appel à la base de donnée et insère un ami (POST)
                 http.request({
-                    url: "http://pam-api.duckdns.org:1337/kevamis",
+                    url: "https://pam-api.duckdns.org/kevamis",
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     content: JSON.stringify({

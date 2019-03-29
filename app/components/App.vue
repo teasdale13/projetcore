@@ -6,9 +6,10 @@
             <ActionItem text="Extra" android.position="popup" android.systemIcon="ic_menu_more" @tap="onExtraTap"/>
         </ActionBar>
         <StackLayout verticalAlignment="center">
-          <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
-          <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
-          <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
+            <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
+            <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
+            <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
+            <button text="Liste de amis" @tap="putTest" class="button"/>
         </StackLayout>
 
     </Page>
@@ -50,6 +51,40 @@ import * as color from 'tns-core-modules/color'
               this.$navigateTo(settings);
           },
 
+          putTest: function(){
+          	var test = [];
+          	var test2 = [];
+          	http.getJSON("https://pam-api.duckdns.org/kevamis/7").then(
+          		result => {
+          			test = result;
+          			console.log(JSON.stringify(test));
+                }
+            );
+
+			  http.getJSON("https://pam-api.duckdns.org/kevfilms/11").then(
+				  result => {
+					  test2 = result.kevamis;
+					  console.log(JSON.stringify(test2));
+					  test2.push(test);
+
+					  http.request({
+						  url: "https://pam-api.duckdns.org/kevfilms/11",
+						  method: "PUT",
+						  headers: { "Content-Type": "application/json" },
+						  content: JSON.stringify({
+							  kevamis: test2
+						  })
+					  }).then((response) => {
+						  console.log(JSON.stringify(response));
+					  }, (e) => {
+					  });
+				  }
+			  );
+
+
+
+          },
+
           pageLoaded() {
               if (app.android && platform.device.sdkVersion >= "21") {
                   const window = app.android.foregroundActivity.getWindow();
@@ -66,14 +101,8 @@ import * as color from 'tns-core-modules/color'
 <style scoped>
 
     .button{
-        width: 60%;
+        width: 80%;
         horiz-align: center;
     }
 
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20px;
-        color: #333333;
-    }
 </style>

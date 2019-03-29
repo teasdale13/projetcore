@@ -25,7 +25,7 @@
 
     export default {
         mounted(){
-            http.getJSON("http://pam-api.duckdns.org:1337/kevamis").then(
+            http.getJSON("https://pam-api.duckdns.org/kevamis").then(
                 result => {
 
                     this.friendsList = result;
