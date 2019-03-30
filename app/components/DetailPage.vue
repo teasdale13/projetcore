@@ -133,8 +133,8 @@
 				);
 
 			},
-			sharedMovieToThisFriend: function (id) {
 
+			sharedMovieToThisFriend: function (id) {
 				var test = [];
 				var test2 = [];
 				var statut = {};
@@ -194,6 +194,12 @@
 					}
 				});
 			},
+			/**
+             * Fonction qui comme son nom le dit update le film lorsque l'utilisateur
+             * appuie sur le bouton. Le fonctionnement va conmme suit! => va chercher
+             * ce qui se retrouve dans les TextField et le ship via une requête PUT au
+             * serveur (Pas l'employé d'un restaurant là!).
+			 */
 			onUpdateTap: function () {
 				var view = require("ui/core/view");
 
