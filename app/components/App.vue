@@ -54,25 +54,25 @@ import * as color from 'tns-core-modules/color'
           putTest: function(){
           	var test = [];
           	var test2 = [];
-          	http.getJSON("https://pam-api.duckdns.org/kevamis/7").then(
+          	/*http.getJSON("https://pam-api.duckdns.org/kevamis/7").then(
           		result => {
           			test = result;
           			console.log(JSON.stringify(test));
                 }
-            );
+            );*/
 
-			  http.getJSON("https://pam-api.duckdns.org/kevfilms/11").then(
+			  http.getJSON("https://pam-api.duckdns.org/kevstatus/1").then(
 				  result => {
-					  test2 = result.kevamis;
+					  test2 = result;
 					  console.log(JSON.stringify(test2));
-					  test2.push(test);
+					  //test2.push(test);
 
 					  http.request({
-						  url: "https://pam-api.duckdns.org/kevfilms/11",
+						  url: "https://pam-api.duckdns.org/kevstatuts/2",
 						  method: "PUT",
 						  headers: { "Content-Type": "application/json" },
 						  content: JSON.stringify({
-							  kevamis: test2
+							  description: "Prêté"
 						  })
 					  }).then((response) => {
 						  console.log(JSON.stringify(response));

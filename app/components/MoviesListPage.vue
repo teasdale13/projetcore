@@ -35,6 +35,7 @@
             http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
                 result => {
                     this.listMovieItem = result;
+                    this.movieArraybackUp = result;
                     console.log("STRING OF LIST" + JSON.stringify(result));
                 },
                 error => {
@@ -61,39 +62,69 @@
                 listMovieItem: [],
                 anneeArray: [],
                 anneeAsNumber: [],
-                page: null
+                page: null,
+                searchbar: null,
+				movieArraybackUp: []
 
             };
         },
         methods: {
-            onSubmit:function(){
-            var view = require("ui/core/view");
-            var recherche = view.getViewById(this.page, "searchbar").text.toString();
-            var myItems = [];
-                if (recherche !== "") {
-                    for (let i = 0; i < this.listMovieItem.length; i++) {
-                        if (this.listMovieItem[i].titre.toLowerCase().includes(recherche)) {
-                            myItems.push(this.listMovieItem[i]);
-                        }
-                    }
-                }
+        	/**
+			 * Fonction qui va chercher le texte dans la SearchBar et qui fait appel à une
+			 * fonction pour filtrer la liste avec le contenu du SearchBar.
+             */
+			onTextChanged: function(){
+				var recherche = this.page.getViewById("searchbar").text.toString();
+				this.findSomethingWithThat(recherche);
+            },
 
-                this.listMovieItem = myItems;
+            /**
+             * Fonction qui va chercher le texte dans la SearchBar et qui fait appel à une
+             * fonction pour filtrer la liste avec le contenu du SearchBar.
+             */
+            onSubmit:function(){
+            var recherche = this.page.getViewById("searchbar").text.toString();
+            this.findSomethingWithThat(recherche);
             },
+
+            /**
+             * LA fameuse fonction qui recherche les titres de films selon ce qui est
+             * contenu dans la barre de rechercher.
+             *
+             * @param recherche Le contenu de la barre de recherche à chercher dans la liste de films.
+             */
+            findSomethingWithThat: function(recherche){
+				var myItems = [];
+				if (recherche !== "") {
+					for (let i = 0; i < this.movieArraybackUp.length; i++) {
+						/* Comparaison des titres dans la liste et du contenu de la recherche */
+						if (this.movieArraybackUp[i].titre.toLowerCase().includes(recherche.toLowerCase())) {
+							myItems.push(this.movieArraybackUp[i]);
+						}
+					}
+				}
+				this.listMovieItem = myItems;
+            },
+            /**
+             * Fonction qui réinitialise la liste complète des films.
+             */
             onClear: function(){
-                http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
-                    result => {
-                        this.listMovieItem = result;
-                        console.log("STRING OF LIST" + JSON.stringify(result));
-                    },
-                    error => {
-                        console.log("ERREUR" + error);
-                    });
+            	this.listMovieItem = this.movieArraybackUp;
+
             },
+            /**
+             * Navique vers la page précédente
+             */
             onBackPressed: function() {
+				this.hideTheF_____Keyboard();
                 this.$navigateTo(home);
             },
+            /**
+             * Losrque l'utilisateur sélectionne un item dans la liste de films
+             * il est propulsé vers la page détaillée du films sélectionné.
+             */
             onItemTap: function({index, e}){
+				this.hideTheF_____Keyboard();
                 console.log("onItemTap");
                 this.$navigateTo(detail, {
                     props: {
@@ -104,7 +135,13 @@
                 console.log("MOVIE " + this.listMovieItem[index])
             },
 
+            /**
+             * Fonction qui est appelée losrque l'utilisateur appuie sur le + dans la
+             * ActionBar. Il est sur le champs attiré dans le trou noir qui mène vers
+             * la page pour ajouter un film.
+             */
             onAddTap: function(){
+				this.hideTheF_____Keyboard();
                 this.$navigateTo(addmovie, {
                     props: {
                         annees: this.anneeAsNumber,
@@ -115,8 +152,21 @@
             },
             onLoaded: function (args) {
                 this.page = args.object;
-                console.log("onLoaded");
-            }
+				this.searchbar = this.page.getViewById("searchbar");
+				this.hideTheF_____Keyboard();
+            },
+
+			/**
+             * Quoi de plus agressant que quelque chose qui apparait quand on a absolument
+             * rien demandé, tout comme un Windows Update. Le clavier du téléphone apparaissait
+             * sans avoir appuyé sur la searchbar. Avec cette fonction le "FOCUS" n'est plus sur la searchbar
+             * donc le clavier appprait seulement quand on appuie sur la celle-ci.
+             *
+             * Magie Magie!
+			 */
+			hideTheF_____Keyboard:function () {
+				this.searchbar.android.clearFocus();
+			}
 
         }
     };
@@ -125,7 +175,7 @@
 <style scoped>
 
     .movieLabel{
-        padding-left: 20vw;
+        padding: 15vw;
         font-size: 15vw;
         height: 50vw;
         vertical-align: center;

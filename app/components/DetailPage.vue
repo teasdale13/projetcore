@@ -226,6 +226,7 @@
 			onLoaded: function (args) {
 				this.page = args.object;
 
+
 			}
 		}
 	}
