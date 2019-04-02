@@ -48,7 +48,7 @@
             http.getJSON("https://pam-api.duckdns.org/kevannees").then(
                 result => {
                     this.anneeArray = result;
-                    console.log("ANNEE " + JSON.stringify(this.anneeArray));
+                    //console.log("ANNEE " + JSON.stringify(this.anneeArray));
                     for (var x = 0; x < this.anneeArray.length; x++){
                         this.anneeAsNumber.push(this.anneeArray[x].annee.toString());
                     }

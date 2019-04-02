@@ -9,7 +9,7 @@
             <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
             <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
             <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
-            <button text="Liste de amis" @tap="putTest" class="button"/>
+            <!--<button text="Liste de amis" @tap="putTest" class="button"/>-->
         </StackLayout>
 
     </Page>
@@ -61,18 +61,18 @@ import * as color from 'tns-core-modules/color'
                 }
             );*/
 
-			  http.getJSON("https://pam-api.duckdns.org/kevstatus/1").then(
+			  http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
 				  result => {
 					  test2 = result;
 					  console.log(JSON.stringify(test2));
 					  //test2.push(test);
 
 					  http.request({
-						  url: "https://pam-api.duckdns.org/kevstatuts/2",
+						  url: "https://pam-api.duckdns.org/kevfilms/12",
 						  method: "PUT",
 						  headers: { "Content-Type": "application/json" },
 						  content: JSON.stringify({
-							  description: "Prêté"
+							  kevstatut: test2[0].id
 						  })
 					  }).then((response) => {
 						  console.log(JSON.stringify(response));

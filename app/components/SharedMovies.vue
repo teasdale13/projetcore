@@ -1,15 +1,15 @@
 <template>
-    <Page>
+    <Page @loaded="onLoadedPage" >
         <ActionBar>
             <label class="actionbarTitle" text="AMI/FILMS"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
-            <Label text="Avec une patate douce!"/>
-            <ListView for="item in filteredFriends" @itemTap="onItemTap">
+            <Label text="Liste des films prêté." id="headerText"/>
+            <ListView for="item in sharedMovies" @itemTap="onItemTap">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell">
-                        <Label :text="item.prenom + ' ' + item.nom" class="movieLabel" textWrap="true"/>
+                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -21,47 +21,95 @@
 <script>
     import * as http from "http";
     import home from "./App";
-    import detail from "./FriendsMovieList";
+	import * as localStorage from "nativescript-localstorage";
+
 
     export default {
         mounted(){
-            http.getJSON("https://pam-api.duckdns.org/kevamis").then(
-                result => {
 
-                    this.friendsList = result;
-                    for (var x = 0; x < this.friendsList.length; x++ ){
-                        if (this.friendsList[x].kevfilms.length > 0){
-                            this.filteredFriends.push(this.friendsList[x]);
-                        }
-                    }
+        	/* Va chercher les statuts pour pouvoir le changer dans la base de données */
+        	http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
+        		result => {
+					this.sharedStatus = result;
 
-                },
-                error => {
-                    console.log(error);
-                }
+				}
             );
         },
+
         data() {
             return {
-                friendsList: [],
-                moviessharedList: [],
-                filteredFriends: [],
+				sharedStatus: [],
+                sharedMovies: [],
+                page: null,
+				headerLabel: null
             }
         },
         methods: {
-            onBackPressed: function (event) {
+			/**
+             * Fonction qui vérifie si la liste de films prêtés est vide et si "TRUE"
+             * change le texte dans le Label ID -> headerText.
+			 */
+			checkIfListIsEmpty:function(){
+				if (this.sharedMovies.length < 1 || this.sharedMovies === null) {
+					this.headerLabel.text = "Aucun films n'est prêtés."
+				}
+            },
+			/**
+             * Fonction qui enregistre localement les films qui sont emprunté par des amis
+             * avant de retourner à la page précédente.
+			 */
+			onBackPressed: function () {
+				localStorage.removeItem("sharedMovies");
+				localStorage.setItem("sharedMovies", JSON.stringify(this.sharedMovies));
                 this.$navigateTo(home);
             },
-            onItemTap: function ({index, e}) {
-                console.log(JSON.stringify(this.friendsList[index]));
-                this.$navigateTo(detail, {
-                    props: {
-                        friend: this.friendsList[index]
+			/**
+             * Lorsque l'utilisateur sélectionne un film de la liste, une fenêtre s'ouvre
+             * pour savoir si le film est retourné. Dans l'affirmative, il est retiré de la liste
+             * et le statut est changé dans la base de données.
+             *
+			 * @param index position dans la liste du film sélectionné.
+			 * @param e erreur
+			 */
+			onItemTap: function ({index, e}) {
+				confirm({
+					title: "Le film à été rendu?",
+					message: "Veuillez choisir",
+					okButtonText: "Oui",
+					cancelButtonText: "cancel"
+				}).then(result => {
+					console.log(result);
+					/* Si le résultat est "TRUE" */
+					if (result){
+						var monFilm = this.sharedMovies[index];
+						/* Retirer le film de la liste. */
+						this.sharedMovies.splice(this.sharedMovies.indexOf(monFilm));
+
+						/* Requête pour changer le statut sur la base de données en ligne. */
+						http.request({
+							url: "https://pam-api.duckdns.org/kevfilms/" + monFilm.id.toString(),
+							method: "PUT",
+							headers: {"Content-Type": "application/json"},
+							content: JSON.stringify({
+								kevstatut: this.sharedStatus[0].id
+							})
+						}).then((response) => {
+							console.log(JSON.stringify(response));
+
+						});
                     }
-
-                });
-
-            }
+					this.checkIfListIsEmpty();
+				});
+            },
+			onLoadedPage: function (args) {
+            	this.page = args.object;
+				this.headerLabel = this.page.getViewById("headerText");
+				/* Ouverture de la sauvegarde locale. */
+				var patate = JSON.parse(localStorage.getItem("sharedMovies") || []);
+				this.sharedMovies = patate;
+				console.log("MON LOCAL STORAGE " + JSON.stringify(patate));
+				this.checkIfListIsEmpty();
+			}
         }
     }
 

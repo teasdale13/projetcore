@@ -72,7 +72,14 @@
                         console.log("types " + this.allTypesString[x]);
                     }
                 }
-            )
+            );
+
+			http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
+				result => {
+					this.statusArray = result;
+					//console.log("Statuts!   " + JSON.stringify(result));
+				}
+			);
 
         },
 
@@ -88,7 +95,8 @@
                 allTypesString: [],
                 // Array des types associés au film.
                 allMovietypes: [],
-                fullMovieList: []
+                fullMovieList: [],
+				statusArray: []
             }
 
         },
@@ -148,10 +156,10 @@
                 var belleHistoire = view.getViewById(this.page, "scenario").text.toString();
                 var suppliceAEndurer = view.getViewById(this.page, "duree").text;
                 var pictureURL = "https://i.imgur.com/x3QWpLs.jpg";
-                console.log("YEAR : " + this.anneeArray[year.selectedIndex].id);
+                console.log("YEAR : " + this.anneeArray[year.selectedIndex].id)
 
 
-                http.request({
+                .http.request({
                     url: "https://pam-api.duckdns.org/kevfilms",
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -162,7 +170,9 @@
                         scenario: belleHistoire,
                         poster: pictureURL,
                         kevtypes: this.allMovietypes,
-                        kevamis: []
+                        kevamis: [],
+                        kevstatut: this.statusArray[0].id,
+                        kevannee: this.anneeArray[year.selectedIndex]
 
                     })
                 }).then((response) => {

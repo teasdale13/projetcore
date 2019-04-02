@@ -16,6 +16,7 @@
   "dependencies": {
     "@vue/devtools": "5.0.0-beta.3",
     "nativescript-camera": "^4.2.0",
+    "nativescript-localstorage": "^2.0.0",
     "nativescript-menu": "^1.0.3",
     "nativescript-socket.io": "^0.9.0",
     "nativescript-statusbar": "^5.0.0",
