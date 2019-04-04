@@ -11,9 +11,7 @@
                 <Button text="modifier" @tap="changeMyFriend" class="button"/>
                 <Button text="Supprimer" @tap="executeFriend" class="button"/>
             </StackLayout>
-
         </StackLayout>
-
     </Page>
 </template>
 
@@ -24,7 +22,6 @@
     export default {
         props: ["friend"],
         mounted(){
-
         	this.myFriend = this.friend;
         },
         data(){
@@ -34,11 +31,18 @@
             }
         },
         methods: {
-            onBackPressed: function (event) {
+        	/**
+             * Navigue tel un bateau vers la page de liste d'ami.
+             */
+            onBackPressed: function () {
                 this.$navigateTo(friendList);
             },
-            executeFriend: function () {
 
+            /**
+             * Fonction qui exécute un ami. De la violence gratuite mais qui fait tellement de bien
+             * à l'âme de pouvoir faire du mal sans conséquences!!!
+             */
+            executeFriend: function () {
                 http.request({
                     url: "https://pam-api.duckdns.org/kevamis/" + this.friend.id.toString(),
                     method: "DELETE"
@@ -47,7 +51,6 @@
                 }, (e) => {
                 });
 
-
                 this.$navigateTo(friendList,{
 					props: {
 						allMyFriendAreHere: this.getAllMyFriend()
@@ -55,6 +58,9 @@
 				});
             },
 
+            /**
+             * Fonction qui fait un update de l'ami.
+             */
             changeMyFriend: function () {
                 var view = require("ui/core/view");
                 var prenom = view.getViewById(this.page, "prenom").text.toString();
@@ -81,8 +87,10 @@
 
             },
 
-            getAllMyFriend: function(){
-
+			/**
+             * Fonction qui va chercher tous les amis dans la base de données.
+			 */
+			getAllMyFriend: function(){
 				http.getJSON("https://pam-api.duckdns.org/kevamis/").then(
 					result => {
 						return result;

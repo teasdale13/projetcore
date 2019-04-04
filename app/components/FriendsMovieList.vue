@@ -20,6 +20,7 @@
 <script>
     import * as httpWithSSLCertificate from "http"
     import sharedmovieFriend from "./SharedMovies";
+
     export default {
         props: ["friend"],
 

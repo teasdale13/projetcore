@@ -19,23 +19,20 @@
 </template>
 
 <script>
-    import * as http from "http";
+    import * as httpWithSSLCertificate from "http";
     import home from "./App";
 	import * as localStorage from "nativescript-localstorage";
 
 
     export default {
         mounted(){
-
         	/* Va chercher les statuts pour pouvoir le changer dans la base de données */
-        	http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
+			httpWithSSLCertificate.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
         		result => {
 					this.sharedStatus = result;
-
 				}
             );
         },
-
         data() {
             return {
 				sharedStatus: [],
@@ -86,7 +83,7 @@
 						this.sharedMovies.splice(this.sharedMovies.indexOf(monFilm));
 
 						/* Requête pour changer le statut sur la base de données en ligne. */
-						http.request({
+						httpWithSSLCertificate.request({
 							url: "https://pam-api.duckdns.org/kevfilms/" + monFilm.id.toString(),
 							method: "PUT",
 							headers: {"Content-Type": "application/json"},
@@ -95,7 +92,6 @@
 							})
 						}).then((response) => {
 							console.log(JSON.stringify(response));
-
 						});
                     }
 					this.checkIfListIsEmpty();

@@ -31,15 +31,6 @@
 
                 <TextView :text="this.myMovie.scenario" class="text" id="boringStory" textWrap="true" maxLength="255"/>
 
-                <!--<Label text="Ceux qui ont emprunté le film :" class="text"/>
-                <ListView for="item in kevamisArray">
-                    <v-template>
-                        <StackLayout orientation="vertical">
-                            <Label :text="item.nom" class="movieLabel" textWrap="true"/>
-                        </StackLayout>
-                    </v-template>
-                </ListView>-->
-
                 <StackLayout orientation="horizontal">
                     <Button text="Prêter" @tap="onButtonSharedTap" class="button" id="sharedButton" isEnabled = "true"/>
                     <Button text="Modifier" @tap="onUpdateTap" class="button"/>
@@ -52,7 +43,7 @@
 </template>
 
 <script>
-	import * as http from "http";
+	import * as JeSurfSurLeNet from "http";
 	import movieslistpage from "./MoviesListPage";
 	import * as localStorage from "nativescript-localstorage";
 
@@ -78,29 +69,26 @@
 		mounted() {
 
 			/* Va chercher l'année avec la "Foreign Key" associée dans le film. */
-			http.getJSON("https://pam-api.duckdns.org/kevannees/" + this.movie.anneesortie.toString()).then(
+			JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevannees/" + this.movie.anneesortie.toString()).then(
 				result => {
 					console.log("ANNEE " + JSON.stringify(result));
 					this.Myannee = result.annee.toString();
 					this.myMovie.kevannee = result.annee.toString();
-					console.log(this.myMovie.kevannee.toString());
 
 					/* Va chercher tous les "Statuts" afin de comparer avec le statut du film.
 					* Si le film a le statut "Prêté" le bouton sera désactivé et le texte changera. */
-					http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
+					JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
 						result => {
 							this.statusArray = result;
-							console.log("Statuts!   " + JSON.stringify(result));
 
 							/* Va chercher les informations du film. */
-							http.getJSON("https://pam-api.duckdns.org/kevfilms/" + this.movie.id.toString()).then(
+							JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevfilms/" + this.movie.id.toString()).then(
 								result => {
 									this.myMovie = result;
 									if (this.myMovie.kevstatut.id === this.statusArray[1].id){
 										this.enableButton();
 									}
 
-									console.log("HTTP GET JSON1 = " + JSON.stringify(this.myMovie));
 									this.kevamisArray = this.myMovie.kevamis;
 									this.kevanneArray = this.myMovie.kevannee;
 									console.log(JSON.stringify(this.movie.kevtypes));
@@ -112,8 +100,6 @@
 								});
 						}
 					);
-
-
 				}
 			);
 
@@ -141,7 +127,7 @@
              */
 			onButtonSharedTap: function () {
 
-				http.getJSON("https://pam-api.duckdns.org/kevamis").then(
+				JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevamis").then(
 					result => {
 						this.sharedList = result;
 						console.log(JSON.stringify(this.sharedList.length));
@@ -187,18 +173,18 @@
 				var filmAmi = [];
 
 				/* Va chercher l'ami avec le ID (param) */
-				http.getJSON("https://pam-api.duckdns.org/kevamis/" + id.toString()).then(
+				JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevamis/" + id.toString()).then(
 					resultAmi => {
 						ami = resultAmi;
 
 						/* Va chercher le tableau d'amis et ajoute l'ami qui emprunte le film. */
-						http.getJSON("https://pam-api.duckdns.org/kevfilms/" + this.myMovie.id.toString()).then(
+						JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevfilms/" + this.myMovie.id.toString()).then(
 							result => {
 								filmAmi = result.kevamis;
 								filmAmi.push(ami);
 
 								/* Méthode PUT pour modifier les données en place dans la BD. */
-								http.request({
+								JeSurfSurLeNet.request({
                                     url: "https://pam-api.duckdns.org/kevfilms/" + this.movie.id.toString(),
                                     method: "PUT",
                                     headers: {"Content-Type": "application/json"},
@@ -215,23 +201,20 @@
 						this.addToLocalStorage(this.myMovie);
 					}
 				);
-
 				/* Cancel le bouton "Prêté" */
 				this.enableButton();
-
-
 			},
             /**
              * Fonction qui supprime le film de la BD et va chercher tous les
              * films pour la passer à la liste de films.
              */
 			onDeleteTap: function () {
-				http.request({
+				JeSurfSurLeNet.request({
 					url: "https://pam-api.duckdns.org/kevfilms/" + this.movie.id.toString(),
 					method: "DELETE"
 				}).then((response) => {
 
-					http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
+					JeSurfSurLeNet.getJSON("https://pam-api.duckdns.org/kevfilms").then(
 						result => {
 							this.fullMovieList = result;
 						}
@@ -261,7 +244,7 @@
 				var shitStory = this.page.getViewById("boringStory").text.toString();
 
 				/* Requête de modification avec les changements. */
-				http.request({
+				JeSurfSurLeNet.request({
 					url: "https://pam-api.duckdns.org/kevfilms/" + this.movie.id.toString(),
 					method: "PUT",
 					headers: {"Content-Type": "application/json"},
@@ -287,9 +270,7 @@
 			 * @param myMovie film à mettre dans le local storage.
 			 */
 			addToLocalStorage: function (myMovie) {
-				console.log("JE SUIS DANS LE LOCAL STORAGE "+JSON.stringify(myMovie));
 				this.storageList.push(myMovie);
-				console.log("MON TOUBARNOUCHE DE LOCAL STORAGE" + JSON.stringify(this.storageList));
 				localStorage.setItem("sharedMovies", JSON.stringify(this.storageList));
 			}
 		}

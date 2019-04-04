@@ -38,8 +38,6 @@ import * as http from "http";
 				}, error => {
 				}
 			);
-
-
       },
       data() {
           return {
@@ -47,10 +45,10 @@ import * as http from "http";
           }
       },
       methods: {
-          onBackPressed: function (event) {
+          onBackPressed: function () {
               this.$navigateTo(home);
           },
-          onAddFriendTap: function (event) {
+          onAddFriendTap: function () {
               this.$navigateTo(dialogFragment)
 
           },
