@@ -6,7 +6,7 @@
         </ActionBar>
         <StackLayout>
 
-            <Label class="message" text="Une partie de L'Osti D'jeu!?"/>
+            <Label class="header" text="Une partie de L'Osti D'jeu!?"/>
             <Label class="question" :text="randomQuestion" textWrap="true"/>
             <Label class="response" :text="randomResponse" textWrap="true"/>
             <Button text="Question" @tap="questionTap" class="button"/>
@@ -22,9 +22,7 @@
 
     export default {
         mounted(){
-
         },
-
         data() {
             return {
                 randomQuestion: '',
@@ -32,11 +30,11 @@
             }
         },
         methods: {
-            onBackPressed: function (event) {
+            onBackPressed: function () {
                 this.$navigateTo(home);
             },
 
-            questionTap: function(event){
+            questionTap: function(){
                 var questions = ["Faire du pouce avec ...", "La première chose que l'ancien tueur fait en sortant de prison c'est ...",
                     "Mon vote pour le trou de cul du monde va à : ...", "Faire garder ses enfants par ...", "C'est quoi le meilleur truc contre les lendemains de veille? ...",
                     "C'est quoi ton parfum ? ...", "Flatte ...", "Qu'est-ce qui gosse en tabarnak? ...", "Faire un DEP pour apprendre à ...",
@@ -48,7 +46,7 @@
                 this.randomResponse = '';
             },
 
-            responseTap: function(event){
+            responseTap: function(){
                 var responses = ["Libarté!!!!", "La géneration d'enfants-rois.", "Un Tripotanus.", "Grand-maman la raciste." , "Stromgol.",
                     "Sauter en parachute de l'espace.", "Le capitaine Charles Patenaude.", "Saccager la Baie James.", "Un vagin qui pue fort.",
                     "Un orphelin qui meurt le soir de Noël.", "Mettre les cendres de papi dans le rapas de Noël.", "Me soûler à ma première communion.",
@@ -69,6 +67,9 @@
 </script>
 
 <style scoped>
+
+    /* Pour les styles générique, voir fichier app.scss */
+
     .question{
         color: black;
         text-align: center;
@@ -83,11 +84,4 @@
         font-size: 17vw;
     }
 
-
-
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20px;
-    }
 </style>

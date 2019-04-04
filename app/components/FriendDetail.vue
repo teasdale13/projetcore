@@ -32,7 +32,7 @@
         },
         methods: {
         	/**
-             * Navigue tel un bateau vers la page de liste d'ami.
+             * Navigue tel un bateau vers la page de liste d'amis.
              */
             onBackPressed: function () {
                 this.$navigateTo(friendList);
@@ -40,7 +40,8 @@
 
             /**
              * Fonction qui exécute un ami. De la violence gratuite mais qui fait tellement de bien
-             * à l'âme de pouvoir faire du mal sans conséquences!!!
+             * à l'âme de pouvoir faire du mal sans conséquences!!! Cette fonction aurait pu sauver
+             * tellement de personne au début des années 40!!
              */
             executeFriend: function () {
                 http.request({
@@ -50,7 +51,6 @@
 
                 }, (e) => {
                 });
-
                 this.$navigateTo(friendList,{
 					props: {
 						allMyFriendAreHere: this.getAllMyFriend()
@@ -59,7 +59,8 @@
             },
 
             /**
-             * Fonction qui fait un update de l'ami.
+             * Tout le monde rêve de pouvoir changer le monde! Eh bien maintenant c'est possible
+             * avec cette fonction qui fait un mise à jour de l'ami. Un ami 2.0!!
              */
             changeMyFriend: function () {
                 var view = require("ui/core/view");
@@ -96,7 +97,6 @@
 						return result;
 					}
 				)
-
             },
             pageLoaded: function (args) {
                 this.page = args.object;
@@ -107,5 +107,7 @@
 </script>
 
 <style scoped>
+
+    /* Voir fichier app.scss */
 
 </style>

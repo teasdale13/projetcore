@@ -15,8 +15,19 @@ TextField{
   color: #000000;
   margin-bottom: 15vw;
   margin-top: 15vw;
+}
+.listViewLabel{
+  padding: 15vw;
+  font-size: 15vw;
+  height: 50vw;
+  vertical-align: center;
+  text-align: center;
 
-
+}
+.header{
+  font-size: 17vw;
+  padding: 15vw;
+  text-align: center;
 }
 .actionbarTitle{
   font-size: 20vw;
@@ -24,10 +35,7 @@ TextField{
   text-align: center;
   font-weight: bold;
 }
-.listviewcell{
-    //height: 50vw;
 
-}
 SearchBar{
   background-color:#40798c ;
   color: black;

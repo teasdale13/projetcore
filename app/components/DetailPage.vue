@@ -109,6 +109,13 @@
 
 		},
 		methods: {
+			/**
+             * Pour éviter que l'on puisse prêter un film à plusieurs personnes à la fois
+             * il faut trouver une façon de ne pas le faire. BINGO!!! Juste a désactiver le
+             * bouton qui sert a prêter le film. Fallait quand même y penser! Voilàa ce que cette fonction fait.
+             * Elle désactive le bouton prêter et change le texte pour ne pas que l'utilisateur
+             * se demande pourquoi le bouton ne fonctionne pas!
+             */
 			enableButton: function(){
 				var buttonShared = this.page.getViewById("sharedButton");
 				buttonShared.isEnabled = false;
@@ -141,7 +148,6 @@
 							message: "À qui le prêtez-vous?",
 							cancelButtonText: "Cancel",
 							actions: this.fullnameList
-
 						};
 						var fullname = "";
 						action(promptOptions).then((r) => {
@@ -287,7 +293,7 @@
 
     .image {
         height: auto;
-        width: 100%;
+        width: 80%;
         padding: 5vw;
         margin: 10px;
     }

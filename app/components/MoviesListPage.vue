@@ -11,7 +11,7 @@
             <ListView for="item in listMovieItem"  @itemTap="onItemTap" height="100%">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell" >
-                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
+                        <Label :text="item.titre" class="listViewLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -174,18 +174,6 @@
 
 <style scoped>
 
-    .movieLabel{
-        padding: 15vw;
-        font-size: 15vw;
-        height: 50vw;
-        vertical-align: center;
-        text-align: center;
-    }
+    /* Voir fichier app.scss */
 
-
-    .header {
-        font-size: 20vw;
-        padding: 10px;
-        text-align: center;
-    }
 </style>

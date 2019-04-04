@@ -5,7 +5,6 @@
             <NavigationButton @tap="onBackPressed" android.systemIcon="ic_menu_back" text="Go Back"/>
         </ActionBar>
         <StackLayout>
-            <Label text="ALLLOOOOOOO"/>
             <Button @tap="AddSomething(false)" class="button" text="Ajouter type"/>
             <Button @tap="AddSomething(true)" class="button" text="Ajouter année"/>
         </StackLayout>
@@ -126,5 +125,12 @@
 </script>
 
 <style scoped>
+
+    /* Pour voir les styles générique, voir fichier app.scss */
+
+    .button{
+        width: 80%;
+        horiz-align: center;
+    }
 
 </style>

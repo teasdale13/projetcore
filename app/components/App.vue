@@ -8,8 +8,7 @@
         <StackLayout verticalAlignment="center">
             <button text="Liste de Films" @tap="onButtonListTap" class="button"/>
             <button text="Liste des films prêtés" @tap="onSharedListTap" class="button"/>
-            <button text="Liste de amis" @tap="onFriendListTap" class="button"/>
-            <!--<button text="Liste de amis" @tap="putTest" class="button"/>-->
+            <button text="Liste d'amis" @tap="onFriendListTap" class="button"/>
         </StackLayout>
 
     </Page>
@@ -19,9 +18,8 @@
 import movieslistpage from "./MoviesListPage";
 import friendlist from "./FriendList";
 import sharedmovies from "./SharedMovies";
-import extra from "./Form";
+import extra from "./Extra";
 import settings from "./setting";
-import * as http from "http";
 import * as app from 'tns-core-modules/application'
 import * as platform from 'tns-core-modules/platform'
 import * as color from 'tns-core-modules/color'
@@ -51,40 +49,6 @@ import * as color from 'tns-core-modules/color'
               this.$navigateTo(settings);
           },
 
-          putTest: function(){
-          	var test = [];
-          	var test2 = [];
-          	/*http.getJSON("https://pam-api.duckdns.org/kevamis/7").then(
-          		result => {
-          			test = result;
-          			console.log(JSON.stringify(test));
-                }
-            );*/
-
-			  http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
-				  result => {
-					  test2 = result;
-					  console.log(JSON.stringify(test2));
-					  //test2.push(test);
-
-					  http.request({
-						  url: "https://pam-api.duckdns.org/kevfilms/12",
-						  method: "PUT",
-						  headers: { "Content-Type": "application/json" },
-						  content: JSON.stringify({
-							  kevstatut: test2[0].id
-						  })
-					  }).then((response) => {
-						  console.log(JSON.stringify(response));
-					  }, (e) => {
-					  });
-				  }
-			  );
-
-
-
-          },
-
           pageLoaded() {
               if (app.android && platform.device.sdkVersion >= "21") {
                   const window = app.android.foregroundActivity.getWindow();
@@ -99,6 +63,8 @@ import * as color from 'tns-core-modules/color'
 </script>
 
 <style scoped>
+
+    /* Pour voir les styles génériques, voir fichier app.scss */
 
     .button{
         width: 80%;

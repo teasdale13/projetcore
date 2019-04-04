@@ -1,15 +1,15 @@
 <template>
     <Page @loaded="onLoadedPage" >
         <ActionBar>
-            <label class="actionbarTitle" text="AMI/FILMS"/>
+            <label class="actionbarTitle" text="FILMS PRÊTÉS"/>
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
         </ActionBar>
         <StackLayout>
-            <Label text="Liste des films prêté." id="headerText"/>
+            <Label text="Liste des films prêté." id="headerText" class="header"/>
             <ListView for="item in sharedMovies" @itemTap="onItemTap">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell">
-                        <Label :text="item.titre" class="movieLabel" textWrap="true"/>
+                        <Label :text="item.titre" class="listViewLabel" textWrap="true"/>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -114,10 +114,6 @@
 
 <style scoped>
 
-    .movieLabel {
-        font-size: 15vw;
-        padding: 15px;
-    }
-
+    /* Voir fichier app.scss */
 
 </style>
