@@ -2,14 +2,17 @@
     <Page @loaded="onLoadedPage" >
         <ActionBar>
             <label class="actionbarTitle" text="FILMS PRÊTÉS"/>
-            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
+            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"></NavigationButton>
         </ActionBar>
         <StackLayout>
-            <Label text="Liste des films prêté." id="headerText" class="header"/>
+            <!-- Header de la page. -->
+            <Label text="Liste des films prêté." id="headerText" class="header"></Label>
+            <!-- ListView des titres de films qui sont prêtés. -->
             <ListView for="item in sharedMovies" @itemTap="onItemTap">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell">
-                        <Label :text="item.titre" class="listViewLabel" textWrap="true"/>
+                        <!-- Titre du film. -->
+                        <Label :text="item.titre" class="listViewLabel" textWrap="true"></Label>
                     </StackLayout>
                 </v-template>
             </ListView>
@@ -35,7 +38,9 @@
         },
         data() {
             return {
+            	// Liste des statuts
 				sharedStatus: [],
+                // Liste des films prêtés
                 sharedMovies: [],
                 page: null,
 				headerLabel: null
@@ -69,7 +74,7 @@
 			 * @param e erreur
 			 */
 			onItemTap: function ({index, e}) {
-				confirm({
+				confirm( {
 					title: "Le film à été rendu?",
 					message: "Veuillez choisir",
 					okButtonText: "Oui",
@@ -97,6 +102,10 @@
 					this.checkIfListIsEmpty();
 				});
             },
+			/**
+             * Lorsque la page se charge, le local storage s'ouvre et charge la liste de films prêté.
+			 * @param args
+			 */
 			onLoadedPage: function (args) {
             	this.page = args.object;
 				this.headerLabel = this.page.getViewById("headerText");

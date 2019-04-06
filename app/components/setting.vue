@@ -65,7 +65,6 @@
                         } else{
 							this.AddType(theShitToPost);
                         }
-
 					}
 
 				});

@@ -1,8 +1,8 @@
 <template>
     <Page @loaded="pageLoaded">
         <ActionBar>
-            <label class="actionbarTitle" text="AJOUTER UN FILM"/>
-            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
+            <label class="actionbarTitle" text="AJOUTER UN FILM"></label>
+            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"></NavigationButton>
         </ActionBar>
         <!-- Contenant de toute la page -->
         <StackLayout orientation="vertical">
@@ -11,31 +11,31 @@
             <StackLayout orientation="horizontal">
                 <!-- Affiche la PHOTO et le bouton pour prendre la photo. -->
                 <StackLayout orientation="vertical">
-                    <Image :src="img" width="150" height="150"/>
-                    <Button text="Take a picture" @tap="takePhoto" class="button"/>
+                    <Image :src="img" width="150" height="150"></Image>
+                    <Button text="Take a picture" @tap="takePhoto" class="button"></Button>
                 </StackLayout>
                 <!-- Affiche les TEXTFIELD pour remplir le champs TITRE ET DURÉE -->
                 <StackLayout orientation="vertical">
-                    <TextField hint="Titre" id="title"/>
-                    <TextField hint="Durée en minutes" keyboardType="number" id="duree"/>
+                    <TextField hint="Titre" id="title"></TextField>
+                    <TextField hint="Durée en minutes" keyboardType="number" id="duree"></TextField>
                 </StackLayout>
             </StackLayout>
-            <TextField hint="Scénario" id="scenario"/>
+            <TextField hint="Scénario" id="scenario"></TextField>
             <StackLayout orientation="horizontal">
                 <StackLayout orientation="vertical" width="50%">
-                    <Button text="Type" @tap="addMovieType" class="button"/>
+                    <Button text="Type" @tap="addMovieType" class="button"></Button>
                     <!-- ListView des types du film -->
                     <ListView for="item in allMovietypes" height="20%">
                         <v-template>
                             <StackLayout orientation="vertical">
-                                <Label :text="item.description" class="movieLabel" textWrap="true"/>
+                                <Label :text="item.description" class="movieLabel" textWrap="true"></Label>
                             </StackLayout>
                         </v-template>
                     </ListView>
                 </StackLayout>
-                <ListPicker :items="anneeAsNumber" id="listpicker" width="100%"/>
+                <ListPicker :items="anneeAsNumber" id="listpicker" width="100%"></ListPicker>
             </StackLayout>
-            <Button text="Sauvegarder" @tap="saveToDB" class="button"/>
+            <Button text="Sauvegarder" @tap="saveToDB" class="button"></Button>
         </StackLayout>
 
     </Page>
@@ -66,15 +66,17 @@
 
 						console.log("types " + this.allTypesString[x]);
 					}
+
+					http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
+						result => {
+							this.statusArray = result;
+							//console.log("Statuts!   " + JSON.stringify(result));
+						}
+					);
 				}
 			);
 
-			http.getJSON("https://pam-api.duckdns.org/kevstatuts").then(
-				result => {
-					this.statusArray = result;
-					//console.log("Statuts!   " + JSON.stringify(result));
-				}
-			);
+
 
 		},
 
@@ -151,10 +153,10 @@
 				var belleHistoire = view.getViewById(this.page, "scenario").text.toString();
 				var suppliceAEndurer = view.getViewById(this.page, "duree").text;
 				var pictureURL = "https://i.imgur.com/x3QWpLs.jpg";
-				console.log("YEAR : " + this.anneeArray[year.selectedIndex].id)
+				console.log("YEAR : " + this.anneeArray[year.selectedIndex].id);
 
 
-					.http.request({
+					http.request({
 					url: "https://pam-api.duckdns.org/kevfilms",
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
@@ -172,28 +174,31 @@
 					})
 				}).then((response) => {
 					console.log(response.toString());
+
+						// Après l'insertion, on retourne à la page de listes de films, mais
+						// avant de le faire nous devons aller chercher tous les films, puisque
+						// la page n'est pas rafraichit correctement après une insertion.
+						http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
+							result => {
+								this.fullMovieList = result;
+							}
+						).then(
+							response => {
+								console.log(JSON.stringify(response));
+							}
+						);
+						// Passe la liste complète en propriété puisque la page
+                        // ne se rafraichit pas assez vite.
+						this.$navigateTo(movieslistpage, {
+							props: {
+								allMovies: this.fullMovieList
+							}
+						});
 				}, (e) => {
 					// trapper les erreurs ici.
 				});
 
-				// Après l'insertion, on retourne à la page de listes de films, mais
-				// avant de le faire nous devons aller chercher tous les films, puisque
-				// la page n'est pas rafraichit correctement après une insertion.
-				http.getJSON("https://pam-api.duckdns.org/kevfilms").then(
-					result => {
-						this.fullMovieList = result;
-					}
-				).then(
-					response => {
-						console.log(JSON.stringify(response));
-					}
-				);
 
-				this.$navigateTo(movieslistpage, {
-					props: {
-						allMovies: this.fullMovieList
-					}
-				});
 			},
 
 			/**
@@ -201,6 +206,7 @@
 			 *
 			 * @param array tableau dont on doit retirer une valeur.
 			 * @param value valeur a retirer du tableau.
+             * @return le tableau avec la valeur retirée.
 			 */
 			remove: function (array, value) {
 				for (var x = 0; x < array.length; x++) {

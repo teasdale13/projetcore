@@ -1,21 +1,22 @@
 <template>
     <Page>
         <ActionBar>
-            <label class="actionbarTitle" text="AMIS"/>
-            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"/>
-            <ActionItem android.position="actionBar" android.systemIcon="ic_menu_add" @tap="onAddFriendTap"/>
+            <label class="actionbarTitle" text="AMIS"></label>
+            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="onBackPressed"></NavigationButton>
+            <ActionItem android.position="actionBar" android.systemIcon="ic_menu_add" @tap="onAddFriendTap"></ActionItem>
         </ActionBar>
         <StackLayout orientation="vertical">
-            <Label class="header" text="Liste d'amis/es"/>
+            <!-- Header -->
+            <Label class="header" text="Liste d'amis/es"></Label>
+            <!-- ListView de tous les amis/es. -->
             <ListView class="listview" for="item in friendlist" @itemTap="friendTap">
                 <v-template>
                     <StackLayout orientation="horizontal" class="listviewcell" vertictalAlignment="center">
-                        <Label :text="item.prenom + ' ' + item.nom" class="listViewLabel" textWrap="true"/>
+                        <Label :text="item.prenom + ' ' + item.nom" class="listViewLabel" textWrap="true"></Label>
                     </StackLayout>
                 </v-template>
             </ListView>
         </StackLayout>
-
     </Page>
 </template>
 

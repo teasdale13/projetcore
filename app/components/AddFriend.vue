@@ -60,11 +60,11 @@
                         nom: textnom
                     })
                 }).then((response) => {
-
+					this.$navigateTo(listFirends);
                 }, (e) => {
                 });
 
-                    this.$navigateTo(listFirends);
+
 
             }
 

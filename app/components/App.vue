@@ -1,7 +1,7 @@
 <template>
     <Page @loaded="pageLoaded">
-        <ActionBar >
-          <label class="actionbarTitle" text="Netfilm"/>
+        <ActionBar>
+            <label class="actionbarTitle" text="Netfilm"/>
             <ActionItem text="Settings" android.position="popup" android.systemIcon="ic_menu_more" @tap="onSettingTap"/>
             <ActionItem text="Extra" android.position="popup" android.systemIcon="ic_menu_more" @tap="onExtraTap"/>
         </ActionBar>
@@ -14,51 +14,70 @@
     </Page>
 </template>
 
-<script >
-import movieslistpage from "./MoviesListPage";
-import friendlist from "./FriendList";
-import sharedmovies from "./SharedMovies";
-import extra from "./Extra";
-import settings from "./setting";
-import * as app from 'tns-core-modules/application'
-import * as platform from 'tns-core-modules/platform'
-import * as color from 'tns-core-modules/color'
+<script>
+	import movieslistpage from "./MoviesListPage";
+	import friendlist from "./FriendList";
+	import sharedmovies from "./SharedMovies";
+	import extra from "./Extra";
+	import settings from "./setting";
+	import * as app from 'tns-core-modules/application'
+	import * as platform from 'tns-core-modules/platform'
+	import * as color from 'tns-core-modules/color'
 
-  export default {
-      data() {
-          return {
-              fullMovieList: []
-          }
-      },
-      methods: {
-          onButtonListTap: function () {
-              this.$navigateTo(movieslistpage)
-          },
-          onFriendListTap: function () {
-              this.$navigateTo(friendlist);
-          },
+	export default {
+		data() {
+			return {
+				fullMovieList: []
+			}
+		},
+		methods: {
 
-          onSharedListTap: function () {
-              this.$navigateTo(sharedmovies)
-          },
+            /**
+             * Lorsque le bouton est appuyé, nous sommes basculé
+             * vers la liste de films.
+             */
+			onButtonListTap: function () {
+				this.$navigateTo(movieslistpage)
+			},
+            /**
+             * Nous donne accès à la liste d'amis/es.
+             */
+			onFriendListTap: function () {
+				this.$navigateTo(friendlist);
+			},
+            /**
+             * Bascule vers la page qui contient tous les films prêtés.
+             */
+			onSharedListTap: function () {
+				this.$navigateTo(sharedmovies)
+			},
 
-          onExtraTap: function () {
-              this.$navigateTo(extra)
-          },
-          onSettingTap: function () {
-              this.$navigateTo(settings);
-          },
+            /**
+             * Petit extra qui je l'espère sera apprécié.
+             */
+			onExtraTap: function () {
+				this.$navigateTo(extra)
+			},
+            /**
+             * Nous envoies vers la section Settings de l'application.
+             */
+			onSettingTap: function () {
+				this.$navigateTo(settings);
+			},
 
-          pageLoaded() {
-              if (app.android && platform.device.sdkVersion >= "21") {
-                  const window = app.android.foregroundActivity.getWindow();
-                  window.setStatusBarColor(new color.Color("#000000").android);
-              }
-          },
-      }
-  }
+			/**
+			 * Lorsque la page se charge, la couleur de la StatusBar est changée
+			 * si la version du téléphone (Android) est plus grande ou égale a 21.
+			 */
+			pageLoaded() {
+				if (app.android && platform.device.sdkVersion >= "21") {
+					const window = app.android.foregroundActivity.getWindow();
+					window.setStatusBarColor(new color.Color("#000000").android);
+				}
+			},
+		}
+	}
 
-  
 
 </script>
 
@@ -66,7 +85,7 @@ import * as color from 'tns-core-modules/color'
 
     /* Pour voir les styles génériques, voir fichier app.scss */
 
-    .button{
+    .button {
         width: 80%;
         horiz-align: center;
     }

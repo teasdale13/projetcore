@@ -77,15 +77,14 @@
                     })
                 }).then((response) => {
                     console.log(JSON.stringify(response));
+					this.$navigateTo(friendList, {
+						props: {
+							allMyFriendAreHere: this.getAllMyFriend()
+						}
+					});
+
                 }, (e) => {
                 });
-
-                this.$navigateTo(friendList, {
-                	props: {
-						allMyFriendAreHere: this.getAllMyFriend()
-                    }
-                });
-
             },
 
 			/**
@@ -107,6 +106,10 @@
 </script>
 
 <style scoped>
+
+    .button{
+        width: 50%;
+    }
 
     /* Voir fichier app.scss */
 

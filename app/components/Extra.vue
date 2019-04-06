@@ -58,7 +58,6 @@
                 }else{
                     alert("Il faut d'abord tirer un début de phrase!!");
                 }
-
             }
         }
     }
